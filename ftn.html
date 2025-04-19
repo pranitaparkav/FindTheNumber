@@ -80,11 +80,12 @@
     let attempts = 0;
     let maxRange;
 
+    // Function to start the game
     function startGame() {
       // Get the range based on difficulty selection
       const difficulty = document.getElementById("difficultySelect").value;
       maxRange = parseInt(difficulty);
-      randomNumber = Math.floor(Math.random() * maxRange) + 1;
+      randomNumber = Math.floor(Math.random() * maxRange) + 1; // Generate a random number within the range
       attempts = 0;
 
       // Hide the difficulty selection and start button after the game starts
@@ -96,6 +97,7 @@
       document.querySelector("button[onclick='startGame()']").style.display = "none"; // Hide Start Game button
     }
 
+    // Function to check the player's guess
     function checkGuess() {
       const userGuess = Number(document.getElementById("guessInput").value);
       const message = document.getElementById("message");
@@ -103,22 +105,23 @@
 
       if (!userGuess || userGuess < 1 || userGuess > maxRange) {
         message.textContent = `🚫 Enter a valid number between 1 and ${maxRange}!`;
-        message.style.color = "#ff0000";
+        message.style.color = "#ff0000"; // Red color for invalid guess
       } else if (userGuess === randomNumber) {
         message.innerHTML = `🎉 Correct! You found it in ${attempts} attempt(s)!<br>Click "Play Again" to restart.`;
-        message.style.color = "#2e7d32";
+        message.style.color = "#2e7d32"; // Green color for correct guess
         document.getElementById("guessInput").style.display = "none";
         document.getElementById("guessBtn").style.display = "none";
         document.getElementById("playAgainBtn").style.display = "inline-block"; // Show Play Again button
       } else if (userGuess < randomNumber) {
         message.textContent = `📉 Too low! Try again.`;
-        message.style.color = "#1976d2";
+        message.style.color = "#1976d2"; // Blue color for hint
       } else {
         message.textContent = `📈 Too high! Try again.`;
-        message.style.color = "#1976d2";
+        message.style.color = "#1976d2"; // Blue color for hint
       }
     }
 
+    // Function to reset the game
     function playAgain() {
       // Reset the game by clearing inputs and showing the start button
       document.getElementById("difficultySelect").disabled = false;
