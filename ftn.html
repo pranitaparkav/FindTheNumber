@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find The Number 🎯</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+    }
+    h1 {
+      color: #444;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    .game-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+    input, select {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 10px;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      width: 60%;
+    }
+    select:focus, input:focus {
+      border-color: #ff7f50;
+      outline: none;
+    }
+    button {
+      background-color: #ff7f50;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff5722;
+    }
+    #message {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Find The Number!</h1>
+  <div class="game-box">
+    <p>Select Difficulty Level:</p>
+    <select id="difficultySelect">
+      <option value="10">Easy: 1 - 10</option>
+      <option value="100">Moderate: 1 - 100</option>
+      <option value="1000">Difficult: 1 - 1000</option>
+    </select>
+    <br>
+    <input type="number" id="guessInput" placeholder="Enter your guess" style="display:none" />
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="checkGuess()" style="display:none" id="guessBtn">Submit Guess</button>
+    <button onclick="playAgain()" style="display:none" id="playAgainBtn">Play Again</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    let randomNumber;
+    let attempts = 0;
+    let maxRange;
+
+    function startGame() {
+      // Get the range based on difficulty selection
+      const difficulty = document.getElementById("difficultySelect").value;
+      maxRange = parseInt(difficulty);
+      randomNumber = Math.floor(Math.random() * maxRange) + 1;
+      attempts = 0;
+
+      // Hide the difficulty selection and start button after the game starts
+      document.getElementById("message").textContent = "Game started! Guess the number!";
+      document.getElementById("guessInput").style.display = "inline-block";
+      document.getElementById("guessBtn").style.display = "inline-block";
+      document.getElementById("playAgainBtn").style.display = "none";
+      document.getElementById("difficultySelect").disabled = true;
+      document.querySelector("button[onclick='startGame()']").style.display = "none"; // Hide Start Game button
+    }
+
+    function checkGuess() {
+      const userGuess = Number(document.getElementById("guessInput").value);
+      const message = document.getElementById("message");
+      attempts++;
+
+      if (!userGuess || userGuess < 1 || userGuess > maxRange) {
+        message.textContent = `🚫 Enter a valid number between 1 and ${maxRange}!`;
+        message.style.color = "#ff0000";
+      } else if (userGuess === randomNumber) {
+        message.innerHTML = `🎉 Correct! You found it in ${attempts} attempt(s)!<br>Click "Play Again" to restart.`;
+        message.style.color = "#2e7d32";
+        document.getElementById("guessInput").style.display = "none";
+        document.getElementById("guessBtn").style.display = "none";
+        document.getElementById("playAgainBtn").style.display = "inline-block"; // Show Play Again button
+      } else if (userGuess < randomNumber) {
+        message.textContent = `📉 Too low! Try again.`;
+        message.style.color = "#1976d2";
+      } else {
+        message.textContent = `📈 Too high! Try again.`;
+        message.style.color = "#1976d2";
+      }
+    }
+
+    function playAgain() {
+      // Reset the game by clearing inputs and showing the start button
+      document.getElementById("difficultySelect").disabled = false;
+      document.querySelector("button[onclick='startGame()']").style.display = "inline-block"; // Show Start Game button
+      document.getElementById("guessInput").style.display = "none";
+      document.getElementById("guessBtn").style.display = "none";
+      document.getElementById("playAgainBtn").style.display = "none"; // Hide Play Again button
+      document.getElementById("message").textContent = "";
+      document.getElementById("difficultySelect").value = "10"; // Reset difficulty to easy
+    }
+  </script>
+</body>
+</html>
